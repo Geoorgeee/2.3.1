@@ -31,7 +31,7 @@ import java.util.Properties;
 @EnableWebMvc
 public class SpringConfig implements WebMvcConfigurer {
     private Environment env;
-
+    private DataSource dataSource;
     private final ApplicationContext applicationContext;
 
     public SpringConfig(Environment env, ApplicationContext applicationContext) {
@@ -39,7 +39,11 @@ public class SpringConfig implements WebMvcConfigurer {
         this.applicationContext = applicationContext;
     }
 
-    private DataSource dataSource;
+
+    @Autowired
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Bean
     public LocalContainerEntityManagerFactoryBean getEntityManagerFactory() {
@@ -76,7 +80,6 @@ public class SpringConfig implements WebMvcConfigurer {
     }
 
 
-
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
@@ -103,9 +106,6 @@ public class SpringConfig implements WebMvcConfigurer {
         resolver.setTemplateEngine(templateEngine());
         registry.viewResolver(resolver);
     }
-    @Autowired
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
+
 }
 
